@@ -1,4 +1,4 @@
-package br.com.fiap.componets;
+package br.com.fiap.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -30,23 +30,28 @@ public class BotaoListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		Posto postos = new Posto();
-		postos.setNome(janela.getInputText("nome").getText());
-		postos.setRua(janela.getInputText("rua").getText());
-		postos.setBairro(janela.getInputText("bairro").getText());
-		postos.setCidade(janela.getInputText("cidade").getText());
-		float preco = Float.parseFloat(janela.getInputText("preco").getText());
-		postos.setPrecoKwh(preco);
-		postos.setEstado(janela.getEstado().getSelectedItem().toString());
-		postos.setStarRate(janela.getStarRater().getSelection());
-		
-		dao.inserir(postos);
-
-     	janela.CarregarDados();
-//		
-//		List<ListaFilmes> lista = dao.listarTodos();
-//		
-		System.out.println(postos);
+		if(e.getActionCommand()=="Salvar"){
+			
+			Posto postos = new Posto();
+			postos.setNome(janela.getInputText("nome").getText());
+			postos.setRua(janela.getInputText("rua").getText());
+			postos.setBairro(janela.getInputText("bairro").getText());
+			postos.setCidade(janela.getInputText("cidade").getText());
+			float preco = Float.parseFloat(janela.getInputText("preco").getText());
+			postos.setPrecoKwh(preco);
+			postos.setPlugins(janela.getPlugs());
+			postos.setEstado(janela.getEstado().getSelectedItem().toString());
+			postos.setStarRate(janela.getStarRater().getSelection());
+			dao.inserir(postos);
+	     	janela.CarregarDados();
+	     	
+		}
+		if(e.getActionCommand()=="Limpar"){
+			janela.Limpar();
+		}
+		if(e.getActionCommand()=="Ordenar"){
+			janela.CarregarDadosOrdanados();
+		}
 	}
 }
 

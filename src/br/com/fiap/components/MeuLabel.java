@@ -1,4 +1,4 @@
-package br.com.fiap.componets;
+package br.com.fiap.components;
 
 import java.awt.Color;
 import java.awt.Font;

@@ -19,7 +19,7 @@ public class Posto {
 	private String cidade;
 	private String estado;
 	private String avaliacao;
-//	private List<String> plugins;
+	private String plugins;
 	private Float precoKwh;
 	private int starRate;
 	
@@ -69,12 +69,12 @@ public class Posto {
 	public void setPrecoKwh(Float precoKwh) {
 		this.precoKwh = precoKwh;
 	}
-//	public List<String> getPlugins() {
-//		return plugins;
-//	}
-//	public void setPlugins(List<String> plugins) {
-//		this.plugins = plugins;
-//	}
+	public String getPlugins() {
+		return plugins;
+	}
+	public void setPlugins(List<String> plugins) {
+		this.plugins = plugins.toString();
+	}
 	public Long getStarRate() {
 		return (long) starRate;
 	}
@@ -91,6 +91,7 @@ public Vector<String> getData() {
 		data.add(bairro);
 		data.add(cidade);
 		data.add(estado);
+		data.add(plugins.substring(1, plugins.length() - 1));
 		data.add(getStarRate().toString());
 		data.add(new String().valueOf(precoKwh));
 	
@@ -105,8 +106,8 @@ public Vector<String> getData() {
 	@Override
 	public String toString() {
 		return "Posto [id=" + id + ", nome=" + nome + ", rua=" + rua + ", bairro=" + bairro + ", cidade=" + cidade
-				+ ", estado=" + estado + ", avaliacao=" + avaliacao + ", precoKwh=" + precoKwh + ", starRate="
-				+ starRate + "]";
+				+ ", estado=" + estado + ", avaliacao=" + avaliacao + ", plugins=" + plugins + ", precoKwh=" + precoKwh
+				+ ", starRate=" + starRate + "]";
 	}
 	
 	

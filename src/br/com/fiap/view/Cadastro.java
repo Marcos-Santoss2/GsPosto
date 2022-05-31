@@ -17,10 +17,10 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import br.com.fiap.componets.BotaoListener;
-import br.com.fiap.componets.InputText;
-import br.com.fiap.componets.MeuLabel;
-import br.com.fiap.componets.StarRater;
+import br.com.fiap.components.InputText;
+import br.com.fiap.components.MeuLabel;
+import br.com.fiap.components.StarRater;
+import br.com.fiap.controller.BotaoListener;
 import br.com.fiap.dao.PostoDao;
 import br.com.fiap.model.Posto;
 
@@ -51,6 +51,7 @@ public class Cadastro extends JFrame {
     JCheckBox  tipo2 = new JCheckBox("tipo2");
     JCheckBox  css2 = new JCheckBox("CSS2");
     JCheckBox chaDemo  = new JCheckBox("CHAdeMO");
+    List<String> checkedBoxes = new ArrayList<String>();
 	
 	JPanel cadastro = new JPanel();
 	JTabbedPane abas = new JTabbedPane();
@@ -66,6 +67,7 @@ public class Cadastro extends JFrame {
 	JPanel preco = new JPanel();
 	JButton salvar = new JButton("Salvar");
 	JButton limpar = new JButton("Limpar");
+	JButton ordenar = new JButton("Ordenar");
 	
 	JPanel avalia = new JPanel(new FlowLayout());
 	
@@ -120,6 +122,7 @@ public class Cadastro extends JFrame {
 		cadastro.add(outros, BorderLayout.LINE_END);		
 		cadastro.add(salvar);
 		cadastro.add(limpar);
+		cadastro.add(ordenar);
 		
 		
 		abas.add("Cadastro", cadastro);
@@ -129,6 +132,8 @@ public class Cadastro extends JFrame {
 		
 		
 		salvar.addActionListener(listenerSalvar);
+		limpar.addActionListener(listenerSalvar);
+		ordenar.addActionListener(listenerSalvar);
 		setVisible(true);
 		
 	}
@@ -141,6 +146,27 @@ public class Cadastro extends JFrame {
 		
 	}
 	
+	public void CarregarDadosOrdanados() {
+		tableModel.setRowCount(0);
+		List<Posto> list = new PostoDao().OrdenarDados();
+		list.forEach(posto -> tableModel.addRow(posto.getData()));
+	}
+	
+	public void Limpar() {
+		inputNome.setText("");
+		inputRua.setText("");
+		inputBairro.setText("");
+		inputCidade.setText("");
+		estado.setSelectedIndex(0);
+		tipo1.setSelected(false);
+		tipo2.setSelected(false);
+		css2.setSelected(false);
+		chaDemo.setSelected(false);
+		inputPreco.setText("");
+		starRater.setSelection(0);
+	}
+	
+	
 	
 	public InputText getInputText(String tipo) {
 		
@@ -150,8 +176,7 @@ public class Cadastro extends JFrame {
 		
 		case "rua":
 			return inputRua;
-			
-		
+
 		case "bairro":
 			return inputBairro;
 		
@@ -170,16 +195,16 @@ public class Cadastro extends JFrame {
 		return estado;
 	}
 
-	public List<String> getPlugin() {
-		
-		 List<String> tipos = new ArrayList();
-		
-		if(tipo1.isSelected()) tipos.add("tipo 1") ;
-		if(tipo2.isSelected()) tipos.add("tipo 2") ;
-		if(css2.isSelected()) tipos.add("css2") ;
-		if(chaDemo.isSelected()) tipos.add("chaDemo") ;
-		
-		return tipos;
+	public List<String> getPlugs() {
+		for (java.awt.Component child : outros.getComponents()) { 
+			if (child instanceof JCheckBox) { 
+				JCheckBox checkBox = (JCheckBox) child;
+				if (checkBox.isSelected()) {
+					checkedBoxes.add(checkBox.getText());
+				}
+			}
+		}
+		return checkedBoxes;
 	}
 
 	public StarRater getStarRater() {

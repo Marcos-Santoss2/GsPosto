@@ -26,6 +26,14 @@ public class PostoDao {
 		return query.getResultList();
 
 	}
-	
-	
-}
+
+	public List<Posto> OrdenarDados() {
+		TypedQuery<Posto> query = 
+				manager.createQuery("SELECT p FROM Posto p ORDER BY p.estado", Posto.class);
+			return query.getResultList();
+		}
+		
+	}
+
+
+
