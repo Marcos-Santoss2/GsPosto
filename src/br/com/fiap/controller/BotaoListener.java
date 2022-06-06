@@ -15,57 +15,41 @@ import br.com.fiap.dao.PostoDao;
 import br.com.fiap.view.Cadastro;
 import br.com.fiap.model.Posto;
 
+public class BotaoListener implements ActionListener {
 
+	private Cadastro janela;
+	PostoDao dao = new PostoDao();
 
-public class BotaoListener implements ActionListener{
+	public BotaoListener(Cadastro janela) {
+		this.janela = janela;
+	}
 
-	 private Cadastro janela; 
-	 PostoDao dao = new PostoDao();
-	 
-	 public BotaoListener(Cadastro janela) {
-			this.janela = janela;
-		}
-	
-	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		
-		if(e.getActionCommand()=="Salvar"){
-			
-			Posto postos = new Posto();
-			postos.setNome(janela.getInputText("nome").getText());
-			postos.setRua(janela.getInputText("rua").getText());
-			postos.setBairro(janela.getInputText("bairro").getText());
-			postos.setCidade(janela.getInputText("cidade").getText());
-			float preco = Float.parseFloat(janela.getInputText("preco").getText());
-			postos.setPrecoKwh(preco);
-			postos.setPlugins(janela.getPlugs());
-			postos.setEstado(janela.getEstado().getSelectedItem().toString());
-			postos.setStarRate(janela.getStarRater().getSelection());
-			dao.inserir(postos);
-	     	janela.CarregarDados();
-	     	
+
+		if (e.getActionCommand() == "Salvar") {
+			try {
+				Posto postos = new Posto();
+				postos.setNome(janela.getInputText("nome").getText());
+				postos.setRua(janela.getInputText("rua").getText());
+				postos.setBairro(janela.getInputText("bairro").getText());
+				postos.setCidade(janela.getInputText("cidade").getText());
+				float preco = Float.parseFloat(janela.getInputText("preco").getText());
+				postos.setPrecoKwh(preco);
+				postos.setPlugins(janela.getPlugs());
+				postos.setEstado(janela.getEstado().getSelectedItem().toString());
+				postos.setStarRate(janela.getStarRater().getSelection());
+				dao.inserir(postos);
+				janela.carregarDados();
+				janela.limpar();
+				JOptionPane.showMessageDialog(null, "Posto criado com sucesso");
+			} catch (Exception error) {
+				JOptionPane.showMessageDialog(null, "Preencha todos os campos vazios");
+			}
 		}
-		if(e.getActionCommand()=="Limpar"){
-			janela.Limpar();
-		}
-		if(e.getActionCommand()=="Ordenar"){
-			janela.CarregarDadosOrdanados();
+		if (e.getActionCommand() == "Ordenar") {
+			janela.carregarDadosOrdenados();
+			JOptionPane.showMessageDialog(null, "Lista de Postos Ordenadas de acordo com estado");
 		}
 	}
 }
-
-
-//	@Override
-//	public void mouseClicked(MouseEvent e) {
-//		if(e.getClickCount() == 2) {
-//			int resposta = JOptionPane.showConfirmDialog(null, "Tem certeza que quer apagar o filme?");
-//			if(resposta == JOptionPane.YES_OPTION) {
-//				JTable tabela = (JTable) e.getSource();
-//				String id = (String) tabela.getValueAt(tabela.getSelectedRow(), 0);
-//				dao.apagar(Long.valueOf(id));
-//				janela.CarregarDados();
-//			}
-//		}	
-//	}
-

@@ -27,15 +27,14 @@ import br.com.fiap.model.Posto;
 
 public class Cadastro extends JFrame {
 
-	MeuLabel titulo = new MeuLabel("Cadastro do Posto", 24);
 	MeuLabel nomeLabel = new MeuLabel("Nome");
-	MeuLabel endereçoLabel = new MeuLabel("Endereço");
-	MeuLabel avaliacao = new MeuLabel("Avaliação: ");
+	MeuLabel enderecoLabel = new MeuLabel("EndereÃ§o");
+	MeuLabel avaliacao = new MeuLabel("AvaliaÃ§Ã£o: ");
 	MeuLabel rua = new MeuLabel("Rua");
 	MeuLabel bairro = new MeuLabel("Bairro");
 	MeuLabel cidade = new MeuLabel("Cidade");
 	MeuLabel plugin = new MeuLabel("Plugin: ");
-	MeuLabel precoLabel = new MeuLabel("Preço do Kwh: ");
+	MeuLabel precoLabel = new MeuLabel("PreÃ§o do Kwh: ");
 	MeuLabel estadoLabel = new MeuLabel("Estado");
 	String[] estados = { " ", "AC","AL","AP","AM","BA","CE","DF","ES","GO","MA","MS","MT","PA","PB","PR","PE","PI","RJ","RN","RS","RO","RR","SC","SP","SE","TO",};
 	JComboBox<String> estado = new JComboBox<>(estados);
@@ -66,14 +65,13 @@ public class Cadastro extends JFrame {
 	JPanel outros = new JPanel(new GridLayout(0,1,0,0));
 	JPanel preco = new JPanel();
 	JButton salvar = new JButton("Salvar");
-	JButton limpar = new JButton("Limpar");
 	JButton ordenar = new JButton("Ordenar");
 	
 	JPanel avalia = new JPanel(new FlowLayout());
 	
 	BotaoListener listenerSalvar = new BotaoListener(this);
 	
-	String[] colunas =  {"Id", "Nome", "Rua", "Bairro", "Cidade", "Estado", "Avaliacao", "Precos"};
+	String[] colunas =  {"Id", "Nome", "Rua", "Bairro", "Cidade", "Estado","Plugins", "Avaliacao", "Precos"};
 	DefaultTableModel tableModel = new DefaultTableModel(colunas, 0);
 	JTable tabela = new JTable(tableModel);
 	
@@ -88,7 +86,7 @@ public class Cadastro extends JFrame {
 		nome.add(nomeLabel);
 		nome.add(inputNome);
 		
-		endereco.setBorder(BorderFactory.createTitledBorder("Informações"));
+		endereco.setBorder(BorderFactory.createTitledBorder("InformaÃ§Ãµes"));
 		endereco.add(nome);
 		enderecoRua.add(rua);
 		enderecoRua.add(inputRua);
@@ -107,7 +105,6 @@ public class Cadastro extends JFrame {
 		avalia.add(avaliacao);
 		avalia.add(starRater);
 		outros.add(avalia);
-	//	outros.add(plugin);
 		outros.add(tipo1);
 		outros.add(tipo2);
 		outros.add(css2);
@@ -116,29 +113,23 @@ public class Cadastro extends JFrame {
 		preco.add(inputPreco);
 		outros.add(preco);
 		
-		
-		
 		cadastro.add(endereco, BorderLayout.LINE_START);
 		cadastro.add(outros, BorderLayout.LINE_END);		
 		cadastro.add(salvar);
-		cadastro.add(limpar);
 		cadastro.add(ordenar);
-		
-		
+			
 		abas.add("Cadastro", cadastro);
 		abas.add("Lista", new JScrollPane(tabela));
 		
 		add(abas);
 		
-		
 		salvar.addActionListener(listenerSalvar);
-		limpar.addActionListener(listenerSalvar);
 		ordenar.addActionListener(listenerSalvar);
 		setVisible(true);
 		
 	}
 	
-	public void CarregarDados() {
+	public void carregarDados() {
 		
 		tableModel.setRowCount(0);
 		List<Posto> lista = new PostoDao().listarTodos();
@@ -146,13 +137,13 @@ public class Cadastro extends JFrame {
 		
 	}
 	
-	public void CarregarDadosOrdanados() {
+	public void carregarDadosOrdenados() {
 		tableModel.setRowCount(0);
-		List<Posto> list = new PostoDao().OrdenarDados();
+		List<Posto> list = new PostoDao().ordenarDados();
 		list.forEach(posto -> tableModel.addRow(posto.getData()));
 	}
 	
-	public void Limpar() {
+	public void limpar() {
 		inputNome.setText("");
 		inputRua.setText("");
 		inputBairro.setText("");
@@ -166,7 +157,18 @@ public class Cadastro extends JFrame {
 		starRater.setSelection(0);
 	}
 	
-	
+	//FunÃ§Ã£o encontrada na Internet
+		public List<String> getPlugs() {
+			for (java.awt.Component child : outros.getComponents()) { 
+				if (child instanceof JCheckBox) { 
+					JCheckBox checkBox = (JCheckBox) child;
+					if (checkBox.isSelected()) {
+						checkedBoxes.add(checkBox.getText());
+					}
+				}
+			}
+			return checkedBoxes;
+		}
 	
 	public InputText getInputText(String tipo) {
 		
@@ -193,18 +195,6 @@ public class Cadastro extends JFrame {
 
 	public JComboBox<String> getEstado() {
 		return estado;
-	}
-
-	public List<String> getPlugs() {
-		for (java.awt.Component child : outros.getComponents()) { 
-			if (child instanceof JCheckBox) { 
-				JCheckBox checkBox = (JCheckBox) child;
-				if (checkBox.isSelected()) {
-					checkedBoxes.add(checkBox.getText());
-				}
-			}
-		}
-		return checkedBoxes;
 	}
 
 	public StarRater getStarRater() {

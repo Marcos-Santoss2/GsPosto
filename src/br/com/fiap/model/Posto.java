@@ -93,15 +93,9 @@ public Vector<String> getData() {
 		data.add(estado);
 		data.add(plugins.substring(1, plugins.length() - 1));
 		data.add(getStarRate().toString());
-		data.add(new String().valueOf(precoKwh));
-	
-		
+		data.add(new String().valueOf(precoKwh));	
 		return data;
 	}
-	
-	
-	
-	
 	
 	@Override
 	public String toString() {
